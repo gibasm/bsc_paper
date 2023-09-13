@@ -1,0 +1,68 @@
+% !TEX encoding = UTF-8 Unicode 
+%
+% Use:
+% magister / inzynier - for master thesis or engineering thesis
+% druk / archiwum - for print version or archive version
+% en - to translate template into english
+% examples:
+%\documentclass[inzynier,druk,en] - master thesis, print version, english
+%\documentclass[magister,druk,en]{dyplom}
+%\documentclass[magister,druk]{dyplom}
+
+\documentclass[inzynier,druk,en]{dyplom}
+
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+
+% Maximum section's depth.
+\setcounter{secnumdepth}{4}
+
+% Listings settings
+\setminted{breaklines, 
+frame=lines,           
+framesep=3mm,          
+baselinestretch=1.1,   
+fontsize=\small,       
+% linenos              % line numbering
+}
+
+\usepackage{lipsum}
+
+% \faculty{Faculty of \dots}                   % Uncomment if applicable
+\fieldofstudy{Computer Engineering (IMT)}                          
+\author{Michał Gibas}
+\title{A system for ECG signal acquisition and pre-processing}
+\supervisor{Jacek Cichosz, DEngSc}
+% \consultant{Consultant's name}               % Uncomment if applicable
+% \specialisation{AAA}                         % Uncomment if applicable
+\keywords{ecg, biosignals, dsp}	% 3-5 keywords  
+
+\begin{document}
+
+\maketitle
+
+\input{eng/abstract}
+
+\tableofcontents
+
+\input{eng/introduction}
+
+\input{eng/chapters/chapter1}
+
+\input{eng/summary}
+
+% Bibliography
+\bibliographystyle{dyplom}
+\bibliography{thesis_refs}
+
+% Lists of figures, listings, tables
+\listoffigures
+\listoflistings
+\listoftables
+
+% Appendices - comment out if not applicable
+\appendixpage
+\appendix
+\input{eng/appendices/appendix1}
+
+\end{document}
