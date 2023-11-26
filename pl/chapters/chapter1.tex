@@ -35,7 +35,7 @@ mającego wartość w diagnostyce.
 \section{Wzmocnienie sygnału i filtracja analogowa}
 
 Sygnał \textit{EKG} charakteryzuje się małymi amplitudami, w zakresie od dziesiątek do setek $\mu V$ \cite{Zywietz1990}.
-Ta cecha badanego sygnału uniemożliwia dokonywanie pomiaru w sposób dokładny przez klasyczne przetworniki analogowo/cyfrowe (\textit{ADC}, ang. \textit{Analog to Digital Converter})
+Ta cecha badanego sygnału uniemożliwia dokonywanie pomiaru w sposób dokładny przez klasyczne przetworniki analogowo/cyfrowe (\textit{ADC}, \textit{Analog to Digital Converter})
 ze względu na ich niską rozdzielczość. Jako rozwiązanie w pracy zastosowano zestaw wzmacniaczy w układzie scalonym firmy \textit{Analog Devices}, \textit{AD8232} \cite{AD8232ds}. 
 Ze względu na to że mierzone impulsy mogą mieć wartości ujemne, \textit{AD8232} przesuwa wzmacnia i normalizuje amplitudę sygnału do przedziału $[0; 3,3V]$ co umożliwia 
 próbkowanie i jego kwantyzację za pomocą klasycznych przetworników \textit{ADC}. 
@@ -54,5 +54,30 @@ górnoprzepustowym oraz dolnoprzepustowym, o wynikowym paśmie przepuszczania $[
 
 \newpage
 
-\section{Próbkowanie i kwantyzacja}
+\section{Próbkowanie, kwantyzacja i komunikacja z komputerem PC}
+
+Do próbkowania i kwantyzacji sygnału zastosowano wbudowany w układ scalony mikorkontrolera \textit{STM32F411CE} przetwornik analogowo/cyfrowy o rozdzielczości 12 bitów \cite{STM32F4DS}.
+Na podstawie literatury \cite{Ajdaraga2018} ustalono, że częstotliwość próbkowania $f_{s}$ o wartości $120 Hz$ dla sygnału \textit{EKG} spełnia zarówno założenia twierdzenia o próbkowaniu
+jak i wymagania diagnostyczne.
+
+
+W pracy użyto wbudowanego w \textit{STM32F411CE} kontrolera \textit{DMA} (\textit{Direct Memory Access}), umożliwiającego
+transfery danych między przetwornikiem \textit{ADC} a buforem w pamięci \textit{SRAM} mikrokontrolera. Umożliwiło to jednoczesne przetwarzanie danych
+trafiających do bufora przez rdzeń mikroprocesora w \textit{STM32F411CE}. Próbkowanie z częstotliwością $f_{s}$ zrealizowano za pomocą wbudowanego
+układu licznika cyfrowego w konfiguracji generującej przerwanie co okres $T_{s} = \frac{1}{f_s}$, każde przerwanie rozpoczyna kolejną konwersję przetwornika
+\textit{ADC}.
+
+
+\textit{STM32F411CE} posiada rdzeń procesora \textit{ARM Cortex M4} który w swojej architekturze (\textit{ISA}, \textit{Instruction Set Architecture}) zawiera również instrukcje
+użyteczne w cyfrowym przetwarzaniu sygnałów (\textit{DSP}, \textit{Digital Signal Processing}) \cite{CM4DSP}.
+
+
+Komunikację z komputerem PC zrealizowano za pomocą interfejsu \textit{UART} (\textit{Universal Asynchonous Receiver/Transmitter}) po stronie mikrokontrolera oraz układu \textit{USB CDC} 
+umożliwiającego komunikację poprzez fizyczny interfejs USB w komputerze PC.
+
+
+W celu zapisu i podglądu sygnału zaprojektowano i zaimplementowano aplikację okienkową na system operacyjny \textit{GNU/Linux} dla architektury \textit{x86\_64}.
+Na potrzeby aplikacji zaprojektowano również odpowiedni protokół komunikacyjny w celu zapewnienia możliwości konfiguracji urządzenia oraz odczytywania
+próbek w ujednolicony sposób. Aplikację zaprojektowano z myślą o komunikacji ze sprzętem poprzez standardowe sterowniki np. \textit{cdc\_acm} \footnote{\url{https://github.com/torvalds/linux/blob/master/drivers/usb/class/cdc-acm.c}}
+dla systemu \textit{Linux} w wersji \textit{6.5}.
 
