@@ -1,7 +1,7 @@
 % !TEX encoding = UTF-8 Unicode 
 % !TEX root = praca.tex
 
-\chapter{Aplikacja na komputery PC}
+\chapter{Aplikacja na komputery osobiste}
 
 \section{Wymagania funkcjonalne}
 
@@ -14,13 +14,13 @@ Aplikację zaprojektowano w celu spełnienia następujących wymagań funkcjonal
 \end{itemize}
 
 
-\section{Struktura i środowisko uruchomieniowe aplikacji}
+\section{Struktura i środowisko uruchomienia aplikacji}
 
 Na aplikację składają się dwa procesy komunikujące się przy użyciu dostarczonych przez system
 operacyjny mechanizmów komunikacji międzyprocesowej:
 
 \begin{itemize}
-    \item \textit{serwis} - proces działający w tle, wykrywający podłaczone urządzenie, 
+    \item \textit{serwis} - proces działający w tle, wykrywający podłączone urządzenie, 
     odbierający dane z makiety sprzętowej poprzez odpowiedni sterownik i przekazujący je 
     dalej do \textit{frontendu},
 
@@ -76,14 +76,14 @@ W obu przypadkach procesy tworzą dwa wątki: odbierający i wysyłający. Oba t
 do współdzielonych z wątkiem głównym buforów typu \textit{FIFO} (\textit{First-In First-Out}).
 W przypadku odebrania danych w wątku odbierającym, dane umieszczane są w buforze, 
 który następnie może zostać odczytany w wątku głównym. Natomiast w przypadku wątku wysyłającego
-to wątek główny zapisuje dane do buforu, które następnie są wysyłane poprzez \textit{gniado} w 
+to wątek główny zapisuje dane do buforu, które następnie są wysyłane poprzez \textit{gniazdo} w 
 wątku wysyłającym. Do rozwiązania klasycznego problemu producenta i konsumenta 
 zastosowano w buforach semafory liczące przechowujące liczbę elementów w buforze.
-Do stworzenia wątków i ich syncrhonizacji zastosownao implementacje następujących klas
+Do stworzenia wątków i ich synchronizacji zastosowano implementacje następujących klas
 z biblioteki standardowej języka \textit{C++}: \textit{std::jthread} (tworzenie i kontrola wątków), 
 \textit{std::queue} (implementacja buforów), \textit{std::counting\_semaphore} 
 (implementacja semaforów). Na rysunku \ref{fig:app_ipc} przedstawiono uproszczony schemat wątków
-obu procesów \textit{serwisu} i \textit{frontendu} oraz ich wątki wraz z buforami.
+obu procesów \textit{serwisu} i \textit{frontendu} wraz z buforami.
 
 
 W celu ujednolicenia interfejsu komunikacyjnego, dane przesyłane między procesami podzielono
@@ -107,7 +107,7 @@ Typy pakietów wraz z opisem zawarto w tabeli \ref{tab:ipc_types}.
 \begin{tabular}{|l|l|lll}
 \cline{1-2}
 $[0]_{16}$ & \textit{Opis}             &  &  &  \\ \cline{1-2}
-00 & Próbka sygnalu                         &  &  &  \\ \cline{1-2}
+00 & Próbka sygnału                         &  &  &  \\ \cline{1-2}
 03 & Żądanie rozpoczęcia przesyłania próbek &  &  &  \\ \cline{1-2}
 04 & Żądanie zatrzymania przesyłania próbek &  &  &  \\ \cline{1-2}
 05 & Potwierdzenie wykonania żądania        &  &  &  \\ \cline{1-2}
@@ -122,7 +122,7 @@ bajtów poza bajtami typu i długością.
 Natomiast struktura całego pakietu reprezentującego próbkę sygnału przedstawiona została w tabeli
 \ref{tab:ipc_sample_pack}. Bajty $[2:5]$ oznaczające numer próbki interpretowane są jako 32-bitowa
 liczba całkowita zapisana w naturalnym kodzie binarnym, 
-natomiast wartość próbki jest intepretowana jako liczba zmiennoprzecinkowa pojedynczej precyzji w standardzie \textit{IEEE 754} \cite{IEE754}.
+natomiast wartość próbki jest interpretowana jako liczba zmiennoprzecinkowa pojedynczej precyzji w standardzie \textit{IEEE 754} \cite{IEE754}.
 
 \begin{table}[h!]
 \centering
@@ -148,7 +148,7 @@ w przeciwnym wypadku przesyłany jest pakiet o typie $85$ (tabela \ref{tab:ipc_t
 
 4. Po potwierdzeniu wykonania żądania, serwer zaczyna przesyłać pakiety z próbkami sygnału odczytanego z makiety sprzętowej.
 
-Przykłąd komunikacji między między procesami w aplikacji przedstawiono również na rysunku \ref{fig:ipc_seq}.
+Przykład komunikacji między między procesami w aplikacji przedstawiono również na rysunku \ref{fig:ipc_seq}.
 
 \begin{figure}[h!]
     \centering 
@@ -166,7 +166,7 @@ Podobnie jak \textit{frontend}, \textit{serwis} posiada dwa wątki do komunikacj
 Program ten tworzy również dwa dodatkowe wątki: odpowiadający za wykrywanie i otwarcie urządzenia jeśli jest podłączone
 oraz wątek odczytujący dane z urządzenia.
 Proces serwisu uruchamiany jest z argumentami z linii poleceń wybranej przez użytkownika powłoki
-(\textit{shell}). Możliwe opcje i wartości arugmentów wraz z wyjaśnieniem przedstawiono tabeli \ref{tab:daemon-cmd-args}.
+(\textit{shell}). Możliwe opcje i wartości argumentów wraz z wyjaśnieniem przedstawiono tabeli \ref{tab:daemon-cmd-args}.
 
 \begin{table}[h!]
 \centering
@@ -184,7 +184,7 @@ Proces serwisu uruchamiany jest z argumentami z linii poleceń wybranej przez u�
 \end{table}
 
 Przykładowe wywołanie i komunikaty z linii poleceń uruchomionego serwisu przedstawiono na listingu \ref{listing:ecgmd}.
-W pierwszej lini listingu \ref{listing:ecgmd} przedstawiono przykładowy sposób uruchomienia programu wraz z przykładowymi
+W pierwszej linii listingu \ref{listing:ecgmd} przedstawiono przykładowy sposób uruchomienia programu wraz z przykładowymi
 argumentami: program uruchomiono z dodatkową opcją \textit{-v} (tabela \ref{tab:daemon-cmd-args}) i ścieżką do pliku wirtualnego
 odpowiadającego urządzeniu makiety sprzętowej. Następnie wypisywane są komunikaty mówiące o oczekiwaniu serwisu na połączenie
 się z procesem \textit{frontendu} jak i z urządzeniem.
@@ -208,6 +208,31 @@ próbek oraz ich przesyłanie do \textit{frontendu}.
 
 \section{Frontend}
 
+Poza dwoma wątkami biorącymi udział w komunikacji międzyprocesowej oraz wątkiem głównym, 
+podczas uruchomienia proces \textit{frontendu} tworzy jeszcze dodatkowo wątek rysujący
+(rys. \ref{fig:app_ipc}; wątek rysujący jest tworzony wyłącznie w przypadku braku argumentu \textit{--nographic}, tabela \ref{tab:frontend-cmd-args}). Wątek rysujący używa biblioteki \textit{SDL2} do wyświetlania dynamicznej grafiki rastrowej, do otwarcia
+okna oraz obsługi wejścia od myszki i klawiatury. 
+
+\begin{listing}
+\begin{minted}{c++}
+class observer
+{
+public:
+    virtual void notify(void*) = 0;
+};
+\end{minted}
+    \caption{Interfejs obserwatora}
+\label{listing:observer}
+\end{listing}
+
+W implementacji klasy rysującej wykres oraz klasy odpowiadającej za zapis sygnału do pliku użyto wzorca obserwatora 
+(ang. \textit{Observer}, interfejs przedstawiony na listingu \ref{listing:observer}) - powszechnie znanego wzorca projektowego. 
+W przypadku odebrania przez wątek główny próbek sygnału
+klasa rysująca oraz klasa zapisująca sygnał otrzymują powiadomienia poprzez metodę \textit{notify} wywołaną w wątku głównym 
+z argumentem będącym indeksem, wskazującym na numer próbki która została dodana do globalnego bufora.
+W wątku głównym przechowywane są jedynie wskaźniki na obiekty implementujące interfejs \textit{observer} co pozawala w chwili
+potrzeby przerysowania wykresu (lub jego fragmentu) lub zapisu do pliku, wywołać na nich po kolei metodę \textit{notify}.
+
 \begin{table}[h!]
 \centering
     \caption{Argumenty linii poleceń \textit{frontendu} wraz z opisami}
@@ -224,20 +249,39 @@ próbek oraz ich przesyłanie do \textit{frontendu}.
 \end{tabular}
 \end{table}
 
+\newpage
+
 \begin{figure}[h!]
     \centering 
-    \includegraphics[scale=0.7]{pl/media/app_ipc.png}
+    \includegraphics[scale=0.5]{pl/media/app_ipc.png}
     \caption{Rysunek poglądowy przedstawiający strukturę wątków dla procesu \textit{frontendu}}
     \label{fig:app_ipc}
 \end{figure}
 
 \begin{figure}[h!]
     \centering 
-    \includegraphics[scale=0.6]{pl/media/frontend_window.png}
+    \includegraphics[scale=0.45]{pl/media/frontend_window.png}
     \caption{Zrzut ekranu przedstawiający okno \textit{frontendu} z wykresem sygnału EKG 
     (w trybie graficznym, tzn. bez argumentu \textit{--nographic})}
     \label{fig:frontendwin}
 \end{figure}
+
+Przykładowe uruchomienie programu \textit{frontendu} przedstawiono na listingu \ref{listing:ecgmapprun}.
+W pierwszej linii przedstawiono przykładowy sposób uruchomienia programu wraz z przykładowymi argumentami.
+W przykładzie z listingu \ref{listing:ecgmapprun} \textit{frontend} uruchomiony został w trybie bez
+okienka wykresu sygnału, z zapisem do pliku \textit{signal.txt}. Zapisywany do pliku sygnał ma
+postać listy liczb rzeczywistych zapisanych w postaci tekstowej, oddzielanych znakiem nowej linii.
+
+\begin{listing}
+\begin{minted}{text}
+./ecgm_app  --file singal.txt --nographic 
+[19:50:18][status] 	Trying to connect to a ecgmd service...
+[19:50:18][status] 	Connected.
+[19:50:18][status] 	ACK received, the device is running.
+\end{minted}
+    \caption{Przykładowe wywołanie \textit{frontendu} aplikacji}
+\label{listing:ecgmapprun}
+\end{listing}
 
 \newpage
 
@@ -262,10 +306,8 @@ nadrzędny w drzewie katalogów zawierających kod źródłowy aplikacji.
 
 \begin{listing}
 \begin{minted}{bash}
-mkdir build
-cd build
-cmake ..
-make
+mkdir build && cd build
+cmake .. && make
 \end{minted}
     \caption{Kroki budowania aplikacji}
 \label{listing:buildinst}
@@ -274,5 +316,26 @@ make
 W celu uruchomienia aplikacji należy użyć dwóch instancji powłoki, w jednej z nich na początku uruchomić program
 \textit{ecgmd} (\textit{serwis}), znajdujący się w katalogu \textit{./services/ecgmd/}.
 Po uruchomieniu \textit{serwisu} możliwe jest uruchomienie programu \textit{ecgmd\_app} (\textit{frontendu}), znajdującego
-się w bieżącym katalogu.
+się w bieżącym katalogu. Dla ułatwienia uruchamiania całości aplikacji stworzony został 
+skrypt w języku \textit{bash} umożliwiający szybkie i łatwe uruchomienie obu procesów aplikacji, 
+zawartość skryptu przedstawiono na listingu \ref{listing:runscript}.
 
+\begin{listing}
+\begin{minted}{bash}
+#!/bin/bash
+DEV=\
+'/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066DFF383638534B43224635-if02'
+
+if [[ $? -eq 2 ]] then
+    DEV=$1 
+fi
+echo "Using device path: $DEV"
+
+./build/services/ecgmd/ecgmd -v --wired $DEV > ecgmd.log &
+sleep 1
+./build/ecgm_app > app.log &
+wait
+\end{minted}
+    \caption{Skrypt uruchamiający całą aplikację.}
+\label{listing:runscript}
+\end{listing}

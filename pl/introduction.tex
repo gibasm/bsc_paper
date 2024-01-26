@@ -3,40 +3,55 @@
 
 \chapter*{Wprowadzenie}
 
-We współczesnym środowisku medycznym akwizycja i przetwarzanie biosygnałów,
-w szczególności elektrokardiogramu (\textit{EKG}), stanowią kluczowe aspekty diagnostyki oraz
-monitorowania zdrowia \cite{Serhani2020}. W świetle globalnej tendencji wzrostu 
-przypadków zachorowań na przewlekłe choroby układu krążenia \cite{Gaidai2023}, 
-rośnie zapotrzebowanie na tanie, efektywne i dostępne narzędzia diagnostyczne. 
-Dostępność tych narzędzi, zwłaszcza w przypadku osób prywatnych oraz w warunkach słabo rozwiniętych 
-systemów ochrony zdrowia, staje się poważnym wyzwaniem dla współczesnej medycyny \cite{Faruk2021}.
+We współczesnym środowisku medycznym akwizycja i przetwarzanie biosygnałów,  
+a w szczególności elektrokardiogramu (\textit{EKG}), stały się nie tylko kluczowym aspektem diagnostyki, 
+ale również istotnym elementem monitorowania stanu zdrowia pacjentów \cite{Serhani2020}. 
+W obliczu globalnej tendencji wzrostu przypadków zachorowań na przewlekłe choroby układu krążenia, co zostało
+wykazane w licznych badaniach \cite{Gaidai2023}, 
+obserwuje się zapotrzebowanie na tanie, efektywne oraz szeroko dostępne narzędzia diagnostyczne. 
+W tej sytuacji, dostępność tych narzędzi staje się nie tylko wyzwaniem, ale wręcz priorytetem, 
+szczególnie w przypadku osób prywatnych oraz w warunkach słabo rozwiniętych 
+systemów opieki zdrowotnej \cite{Faruk2021}.
 
-Przyjrzenie się obecnej sytuacji w obszarze medycyny ukazuje ograniczenia w dostępie do 
-sprzętu oraz oprogramowania diagnostycznego, co jest szczególnie zauważalne w krajach rozwijających się \cite{Faruk2021}. 
-W konsekwencji, potrzeba stworzenia prostych, tanich i powszechnie dostępnych narzędzi diagnostycznych, umożliwiających 
-akwizycję i wstępne przetwarzanie sygnału \textit{EKG}, stała się motywacją oraz impulsem do podjęcia tematu tej pracy.
+Rozważając wspomniane wyzwania, niezbędnym staje się zwrócenie uwagi na rozwój technologii, które nie tylko zapewnią
+efektywną rejestrację i analizę biosygnałów, ale również umożliwią powszechny dostęp do diagnostyki, niezależnie od
+wieku, klasy społecznej czy pochodzenia. Poprzez wspieranie szybkiego i skutecznego podejmowania 
+decyzji klinicznych,
+takie rozwiązania mogą przyczynić się do poprawy jakości opieki zdrowotnej, nawet w trudnych warunkach materialnych.
 
-Przedstawione wyżej wyzwania podkreślają potrzebę rozwoju rozwiązań, które nie tylko zapewnią powszechny dostęp
-do diagnostyki, ale również umożliwią błyskawiczną i efektywną analizę biosygnałów, wspierając tym samym szybkie 
-i wczesne podejmowanie decyzji klinicznych. W ramach niniejszej pracy inżynierskiej, skoncentrowanej stworzeniu urządzenia 
-oraz dedykowanego mu oprogramowania, zaproponowano prototyp taniego i dostępnego narzędzia diagnostycznego. 
+W ramach niniejszej pracy inżynierskiej, skoncentrowanej na stworzeniu urządzenia 
+oraz dedykowanego mu oprogramowania, zaproponowano \textbf{prototyp}\footnote{Urządzenie nie spełnia 
+odpowiednich standardów aby być klasyfikowanym jako narzędzie które może być użyte do rozwiązania prawdziwych 
+problemów diagnostycznych.} taniego narzędzia diagnostycznego, którego części są powszechnie dostępne. 
 
-Elektrokardiogram (\textit{EKG}) jest wynikiem aktywności elektrycznej serca, spowodowanej skurczem i rozkurczem tego mięśnia 
-\cite{Limaye2016}. Sygnał \textit{EKG} jest funkcją mierzonego napięcia w czasie. 
-Jeden cykl składający się ze skurczu i rozkurczy, reprezentowany jest przez zespoł tzw. \textit{załamków} 
-oznaczonych literami \textit{P}, \textit{Q}, \textit{R}, \textit{S} i \textit{T} przedstawionymi na rys \ref{fig:pqrst}.
+Praca ta posiada również wymiar edukacyjny, który wykracza poza aspekty techniczne i inżynieryjne. 
+Może ona służyć jako narzędzie do szerzenia świadomości na temat chorób układu krążenia, pomagając zwiększyć zrozumienie ich przyczyn,
+symptomów i metod leczenia wśród szerszej publiczności. Dzięki praktycznemu zastosowaniu opracowanego urządzenia i oprogramowania, 
+możliwe jest zilustrowanie, jak technologia może przyczyniać się do poprawy diagnostyki i monitorowania zdrowia serca. 
+Ponadto, praca ta ma potencjał wykorzystania w edukacji akademickiej i zawodowej, oferując studentom oraz specjalistom inspirację 
+do stosowania bardziej praktycznego podejścia do nauki o przetwarzaniu biosygnałów oraz elektroniki. 
+Umożliwia to nie tylko głębsze zrozumienie teorii stojącej za tymi dyscyplinami, ale również pozwala na rozwijanie
+umiejętności praktycznych poprzez bezpośrednią pracę z urządzeniem, co jest kluczowe w edukacji inżynierskiej i technologicznej.
 
-Zasadniczą trudnością w systemach akwizycji i przetwarzania sygnałów jest efektywna eliminacja zakłóceń (\textit{szumów}), które
-znacząco utrudniają proces diagnostyczny w przypadku sygnału \textit{EKG}. Wśród nich wyróżnić można m. in. \cite{Limaye2016}: 
-dryft linii izoelektrycznej (\textit{baseline wander}), 
-szumy indukowane przez instalacje elektryczne w budynkach (\textit{power line interference noise}) 
-czy artefakty spowodowane ruchem pacjenta. Jedną ze sprawdzonych metod eliminacji szumów są filtry cyfrowe, w tym filtry 
-o skończonej odpowiedzi impulsowej \textit{FIR} (\textit{Finite Impulse Response}) \cite{Tompkins1993}.
+\newpage
+
+Elektrokardiogram (\textit{EKG}) jest graficznym przedstawieniem aktywności elektrycznej serca, będącej wynikiem jego rytmicznego
+skurczu i rozkurczu \cite{Limaye2016}. Sygnał \textit{EKG} jest funkcją napięcia wytwarzanego przez serce, w dziedzinie czasu.
+Analiza tego sygnału jest kluczowa dla oceny funkcjonowania serca.
+Każdy cykl, obejmujący zarówno fazę skurczu, jak i rozkurczu, reprezentowany jest przez zespół tzw. \textit{załamków} 
+oznaczonych literami \textit{P}, \textit{Q}, \textit{R}, \textit{S} i \textit{T}, jak przedstawiono na rysunku \ref{fig:pqrst}.
+
+Jednym z największych wyzwań w systemach akwizycji i przetwarzania sygnałów jest skuteczna eliminacja zakłóceń (\textit{szumów}), 
+które w przypadku \textit{EKG} mogą znacząco utrudnić proces diagnostyczny. 
+Wśród nich wyróżnić można m. in. \cite{Limaye2016}: dryft linii izoelektrycznej (\textit{baseline wander}), 
+szumy pochodzące z instalacji elektrycznych w budynkach (\textit{power line interference}),
+a także artefakty spowodowane ruchem pacjenta. Jedną z efektywnych metod eliminacji szumów, jest zastosowanie filtrów cyfrowych, 
+w tym filtrów o skończonej odpowiedzi impulsowej \textit{FIR} (\textit{Finite Impulse Response}) \cite{Tompkins1993}.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.6]{pl/media/pqrst.png}
-    \caption{Zespoł załamków \textit{PQRST} (\cite{Limaye2016}, fig. 1.)}
+    \caption{Zespół załamków \textit{PQRST} (\cite{Limaye2016}, fig. 1.)}
     \label{fig:pqrst}
 \end{figure}
 
@@ -48,7 +63,7 @@ Celem pracy było stworzenie sprzętowego oraz programowego systemu akwizycji i 
 mającego znamiona narzędzia diagnostycznego. W zamyśle pracy było stworzenie prototypowego systemu przeznaczonego 
 do użytku prywatnego, w tym do wstępnej i samodzielnej oceny stanu mięśnia sercowego a następnie
 potencjalnej konsultacji lekarskiej.  
-Autor zastrzega jednak, że praca ma wymiar edukacyjny, a celem jej nie było stworzenie narzędzia diagnostycznego spełniającego 
+Autor zastrzega jednak, że praca ma wymiar edukacyjny, a celem jej nie było stworzenie narzędzia spełniającego 
 standardy urządzenia medycznego.
 
 
@@ -56,28 +71,27 @@ Niniejsza praca opisuje projekt i realizację dwóch części:
 
 \begin{itemize}
 
-    \item \textbf{sprzętowej}: makieta układu elektronicznego\footnote{Przez makietę rozumiany jest prototyp urządzenia typu 
-    \textit{PoC} (ang. \textit{Proof of Concept})}, zawierająca układ wzmacniacza, filtry analogowe, 
+    \item \textbf{sprzętowej}: makieta układu elektronicznego\footnote{Przez makietę rozumiany jest prototyp urządzenia umożliwiającego akwizycję i wstępne przetwarzanie sygnału. }, zawierająca układ wzmacniacza, filtry analogowe, 
     mikrokontroler, programator sprzętowy oraz mostek \textit{USB}/\textit{UART},
 
 
-    \item \textbf{programowej}: oprogramowanie sprzętowe (inaczej \textit{firmware}), aplikacja na komputery PC 
-    (zwana w dalszych rozdziałach \textit{aplikacją}) oraz programy/skrypty wspomagające projektowanie filtrów cyfrowych 
+    \item \textbf{programowej}: oprogramowanie sprzętowe (inaczej \textit{firmware}), aplikacja na komputery osobiste 
+    (zwana w dalszych rozdziałach \textit{aplikacją}) oraz skrypty wspomagające projektowanie filtrów cyfrowych 
     (zwane krócej \textit{skryptami}).
 
 \end{itemize}
 
 Część sprzętowa odpowiada za wstępne wzmocnienie i analogową filtrację sygnału \textit{EKG} 
-oraz umożliwienie komunikacji z komputerem PC na którym zainstalowana jest wspomniana aplikacja. 
+oraz umożliwienie komunikacji z komputerem osobistym na którym zainstalowana jest wspomniana aplikacja. 
 
 
 Oprogramowanie sprzętowe (na układ mikrokontrolera makiety sprzętowej) umożliwiło obsługę przetwornika analogowo/cyfrowego,
-implementację filtrów cyfrowych oraz implementację protokołu oraz obsługę interfejsu do komunikacji z komputerem PC.
-Aplikacja na komputery PC została stworzona w celu podglądu sygnału oraz jego zapisu w czasie rzeczywistym.
+implementację filtrów cyfrowych oraz implementację protokołu oraz obsługę interfejsu do komunikacji z komputerem osobistym.
+Aplikacja na komputery osobiste została stworzona w celu podglądu sygnału oraz jego zapisu w czasie rzeczywistym.
 
 \newpage
 
-\section*{Użyty sprzęt oraz technologie}
+\section*{Użyty sprzęt i technologie}
 
 Ze względu prototypowy charakter pracy, część sprzętowa zrealizowana została jako makieta w oparciu o gotowe
 płytki drukowane z układami elektronicznymi. W skład części sprzętowej wchodzą następujące elementy, szczegółowiej
@@ -93,7 +107,7 @@ opisane w rozdziale 2:
     przetwornik analogowo/cyfrowy, liczniki czy kontroler \textit{DMA} (\textit{Direct Memory Access}),
     
 
-    \item przewody połączeniowe, w tym przewód \textit{USB} do połączenia makiety z komputerem PC.
+    \item przewody połączeniowe, w tym przewód \textit{USB} do połączenia makiety z komputerem osobistym.
 
 
 \end{itemize}
@@ -119,12 +133,16 @@ W części programowej użyto następujących języków, bibliotek i narzędzi:
     \item \textbf{standardowe biblioteki języków C i C++ na system GNU/Linux} \cite{GLIBC238}: biblioteki użyte do 
     implementacji komunikacji międzyprocesowej, wielowątkowości oraz niektórych struktur danych w aplikacji,
 
-    \item \textbf{język Python 3} \footnote{\url{https://www.python.org/}}: język skryptowy użyty do napisania 
-    skryptów obliczeniowych i pomocniczych w projektowaniu filtrów cyfrowych,
-   
     \item \textbf{CMake} \footnote{\url{https://cmake.org/}} \textbf{oraz GNU Make} 
     \footnote{\url{https://www.gnu.org/software/make/}}: systemy automatyzujące 
-    kompilację i linkowanie aplikacji w \textit{C} i \textit{C++}.
+    kompilację i konsolidację aplikacji w językach \textit{C} i \textit{C++},
+
+    \item \textbf{język Python 3} \cite{python}: język skryptowy użyty do napisania 
+    skryptów obliczeniowych i pomocniczych w projektowaniu filtrów cyfrowych,
+   
+\item biblioteki \textbf{SciPy}, \textbf{NumPy}, \textbf{matplotlib}
+    \cite{SciPy} \cite{NumPy} \cite{matplotlib}: biblioteki języka \textit{Python} użyte w pracy 
+    do obliczeń, zaprojektowania filtrów cyfrowych i wizualizacji danych na wykresach.
 
 \end{itemize}
 

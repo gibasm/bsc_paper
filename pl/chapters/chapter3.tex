@@ -6,17 +6,17 @@
 \section{Wstęp i wymagania funkcjonalne}
 Oprogramowanie makiety sprzętowej stworzono z myślą o następujących wymaganiach funkcjonalnych:
 
-- zapewnienie komunikacji z komputerem PC poprzez interfejs \textit{UART},
+- zapewnienie komunikacji z komputerem osobistym poprzez interfejs \textit{UART},
 
 - wykrycie podłączenia elektrod i adekwatna zmiana koloru diody \textit{RGB},
 
-- odczyt próbkowanych i kwantyzowanych wartości z przetwornika \textit{ADC},
+- odczyt wartości próbek sygnału z przetwornika \textit{ADC},
 
 - wstępne przetwarzanie sygnału przy użyciu filtrów cyfrowych.  
 
-Oprogramowanie sprzętowe napisano głównie w języku \textit{C}, w nieznacznej cześci przy 
+Oprogramowanie sprzętowe napisano głównie w języku \textit{C}, w nieznacznej części przy 
 pomocy języka \textit{C++}. W implementacji zastosowano również bibliotekę \textit{HAL STM32},
-która służyła jako warstwa abstrakcji między sprzętem a oprogramowaniem. Do preprocessingu, 
+która służyła jako warstwa abstrakcji między sprzętem a oprogramowaniem. Do pre-processingu, 
 kompilacji i konsolidacji użyto narzędzi z kolekcji \textit{ARM GNU Embedded Toolchain}. 
 Użyto również programów do automatyzacji procesu
 budowania oprogramowania takich jak \textit{CMake} oraz \textit{GNU Make}.
@@ -24,10 +24,10 @@ budowania oprogramowania takich jak \textit{CMake} oraz \textit{GNU Make}.
 \textit{Firmware} był wgrywany do pamięci \textit{EEPROM} 
 (\textit{Electrically Erasable Programmable Read-Only Memory}) mikrokontrolera za pomocą
 programatora sprzętowego \textit{STLink}.
-Programator podłączano poprzez interfejs \textit{USB} do komputera \textit{PC}.
+Programator podłączano poprzez interfejs \textit{USB} do komputera osobistego.
 Do przesyłania obrazu pamięci w postaci
 pliku binarnego użyto oprogramowania dostarczonego przez producenta: \textit{st-flash} 
-\cite{stflash}. Na listingu \ref{listing:stflash} przedsatwiono przykładowe wywołanie wspomnianego
+\cite{stflash}. Na listingu \ref{listing:stflash} przedstawiono przykładowe wywołanie wspomnianego
 programu, gdzie \textit{ECGMonitor.bin} to binarny obraz programu, natomiast \textit{0x8000000} to
 adres (liczba szesnastkowa z prefiksem \textit{0x}) 
 pod który zostanie załadowany obraz.
@@ -43,7 +43,7 @@ st-flash write ECGMonitor.bin 0x8000000
 Po zakończeniu wszystkich kroków procesu budowania \textit{firmwareu} wynikowym plikiem
 jest plik ELF (\textit{Executable Linkable Format}) \cite{elfARM}. 
 Plik ten zawiera m.in. informacje na temat segmentów programu czy dodatkowych symboli 
-do \textit{debugowania}. Format ten jednak nie jest kompatybliny z narzędziem \textit{st-flash}.
+do \textit{debugowania}. Format ten jednak nie jest kompatybilny z narzędziem \textit{st-flash}.
 Narzędzie to przyjmuje binarny obraz pamięci, który załadowywany jest począwszy od wskazanego
 w linii poleceń adresu. Do wygenerowania obrazu pamięci z pliku \textit{ELF}, zastosowano program 
 \textit{arm-none-eabi-objcopy} z kolekcji \textit{ARM GNU Embedded Toolchain}.
@@ -54,9 +54,9 @@ W oprogramowaniu sprzętowym użyto wbudowanego w mikrokontroler kontrolera \tex
 osobną od rdzenia magistralą z innymi układami peryferyjnymi i pamięcią. Umożliwia to niemal niezależne
 transfery danych między przetwornikiem analogowo-cyfrowym a pamięcią.
 W celu osiągnięcia precyzyjnej częstotliwości próbkowania $f_s = 360 Hz$ wykorzystano wbudowany układ licznika
-o rozdzielczości 16 bitów, który skonfigurowano by zliczał w naturalnym kodzie binarnym modulo 512 z częstotliwością 
+o rozdzielczości 16 bitów, który skonfigurowano by zliczał w naturalnym kodzie binarnym \textit{modulo} 512 z częstotliwością 
 $f_c \approx 184,3 kHz$ i generował przerwanie przy każdym przepełnieniu. W kontrolerze przerwań skonfigurowano ten 
-typ przerwania w taki sposób aby każdorazowo wywoływało konwersję przetwornika analogowo-cyfrowego, a przewanie
+typ przerwania w taki sposób aby każdorazowo wywoływało konwersję przetwornika analogowo-cyfrowego, a przerwanie
 końca konwersji wywoływało transfer \textit{DMA} z przetwornika do bufora kołowego w pamięci mikrokontrolera.
 W rutynie przerwania sygnalizującego koniec transferu \textit{DMA} umieszczono fragment kodu przedstawiony na listingu
 \ref{listing:dmairq}.
@@ -74,9 +74,9 @@ __enable_irq();
 Funkcje \textit{\_\_disable\_irq} i \textit{\_\_enable\_irq} odpowiadają kolejno za tymczasowe wyłączanie obsługi przerwań 
 i jej ponowne włączenie.
 Zmienna \textit{adc\_buffer\_last\_index} przechowuje indeks na którym zostanie zapisana kolejna próbka w buforze kołowym, będącym
-tablicą o długości \textit{ADC\_BUF\_LEN} i rozmiarze elemtów równym dwóm bajtom (rozmiar każdej z próbek). Wartość
+tablicą o długości \textit{ADC\_BUF\_LEN} i rozmiarze elementów równym dwóm bajtom (rozmiar każdej z próbek). Wartość
 indeksu jest inkrementowana, dzięki operacji modulo nie przekracza zakresu tablicy i wraca na jej początek po dotarciu do końca.
-Wspomniane \textit{\_\_disable\_irq} i \textit{\_\_enable\_irq} funkcje zastosowanu w tym przypadku aby zapewnić 
+Wspomniane \textit{\_\_disable\_irq} i \textit{\_\_enable\_irq} funkcje zastosowano w tym przypadku aby zapewnić 
 atomowość operacji inkrementacji indeksu w buforze kołowym, innymi słowy by nie dopuścić innych przerwań do 
 potencjalnego opóźnienia tak krytycznej dla działania sprzętu operacji.
 
@@ -86,7 +86,7 @@ Odczyt danych z bufora kołowego odbywa się przy założeniu że rdzeń odczytu
 zdefiniowano zmienną globalną \textit{adc\_buffer\_curr\_index}, na rysunku \ref{fig:rbuffer} przedstawiono bufor
 kołowy w skrajnym przypadku gdzie jest on zapełniony i w przypadku nieodczytania danych dostatecznie szybko, dane zostaną utracone.
 Podobnie jak w przypadku \textit{adc\_buffer\_last\_index}, wspomniana zmienna globalna jest inkrementowana przy każdym odczycie
-wraz z wykonaniem analogicznej operacji modulo.
+wraz z wykonaniem analogicznej operacji \textit{modulo}.
 
 \begin{figure}[h!]
     \centering 
@@ -142,7 +142,7 @@ optymalizacji w przypadku danego fragmentu pamięci, adresu, zmiennej lub funkcj
 
 
 Działanie filtru FIR implementuje funkcja \textit{fir\_convolve} przedstawiona na listingu \ref{listing:firconv}. 
-Funkcja ta realizuje operację splotu dyskretnego próbek sygnału ze współczynnikami flitru:
+Funkcja ta realizuje operację splotu dyskretnego próbek sygnału ze współczynnikami filtru:
 
 $$
 (f * g)[n] = \sum_{k=-\infty}^{\infty} f[k]g[n-k]
@@ -163,7 +163,7 @@ fp32_t fir_convolve(struct fir_t* fir, uint32_t pos)
     return result;
 } 
 \end{minted} 
-\caption{Funkcja realizaująca splot dyskretny próbek sygnału ze współczynnikami filtru FIR}
+\caption{Funkcja realizująca splot dyskretny próbek sygnału ze współczynnikami filtru FIR}
 \label{listing:firconv}
 \end{listing}
 
@@ -172,7 +172,7 @@ fp32_t fir_convolve(struct fir_t* fir, uint32_t pos)
 \section{Wykrywanie podłączonych elektrod}
 
 Układ \textit{AD8232} udostępnia dwa wyprowadzenia do wykrywania odłączonych elektrod oznaczone \textit{LOD-} i \textit{LOD+}.
-W wypadku gdy jedna lub więcej elektrod jest niepodłączona to conajmniej jedno z wyprowadzeń jest w stanie wysokim 
+W wypadku gdy jedna lub więcej elektrod jest niepodłączona to co najmniej jedno z wyprowadzeń jest w stanie wysokim 
 (logiczna 1).
 Wykrywanie podłączonych elektrod zrealizowano dzięki możliwości generowania przerwań zewnętrznych poprzez wykrycie zmiany
 stanu wyprowadzenia mikrokontrolera. Wyprowadzenia (połączone z \textit{LOD-} i \textit{LOD+}) w odpowiednich portach 
@@ -207,7 +207,7 @@ void EXTI9_5_IRQHandler(void)
 \label{listing:leadsoff}
 \end{listing}
 
-Fragment kodu wspomnianej procedury osbługi przerwania przedstawiono na listingu \ref{listing:leadsoff}.
+Fragment kodu wspomnianej procedury obsługi przerwania przedstawiono na listingu \ref{listing:leadsoff}.
 Funkcje z przedrostkiem \textit{HAL\_GPIO\_} są funkcjami biblioteki \textit{HAL STM32}. Funkcja
 \textit{ReadPin} odczytuje wartość logiczną danego wejścia w danym porcie \textit{GPIO}, natomiast
 \textit{WritePin} ustawia zadaną wartość na wyjściu danego wyprowadzenia. W programie użyto zmiennej globalnej
@@ -217,7 +217,24 @@ przeciwnym wypadku na kolor zielony (konkretne kolory aktywowane są wartością
 
 \section{Komunikacja z użyciem interfejsu UART}
 
-Dla prostoty komunikacji urządzenia z komputerem PC zastosowano komunikację jednokierunkową,
-urządzenie wysyła dane poprzez interfejs zawsze kiedy wykryje podpięte elektrody a w buforze kołowym znajdują 
-się nowe próbki do odczytu.
+Dla prostoty komunikacji urządzenia z komputerem osobistym zastosowano komunikację jednokierunkową,
+urządzenie wysyła dane poprzez interfejs zawsze kiedy wykryje podpięte elektrody a w buforze kołowym
+znajdują się nowe próbki do odczytu. 
 
+Interfejs \textit{UART} skonfigurowano przy użyciu następujących parametrów:
+
+- szybkość transmisji: 9600 bodów,
+
+- liczba bitów na bajt: 8,
+
+- brak kontroli parzystości,
+
+- liczba bitów startowych: 1,
+
+- liczba bitów stopu: 1.
+
+Do transmisji danych poprzez interfejs \textit{UART} użyto funkcji \textit{HAL\_UART\_Transmit} z biblioteki \textit{HAL STM32}.
+Funkcja ta odpowiada za wysłanie tablicy bajtów o określonym rozmiarze przez układ kontrolera \textit{UART} w mikrokontroler.
+
+Urządzenie wysyła jedynie 4 bajtowe próbki w formacie \textit{Little Endian}, 
+które interpretowane są jako liczby zmiennoprzecinkowe, pojedynczej precyzji, w standardzie \textit{IEEE-754}.

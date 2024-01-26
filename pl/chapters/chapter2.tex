@@ -18,8 +18,7 @@ W skład makiety sprzętowej wchodzą:
 \end{itemize}
 
 Makieta sprzętowa wykonana w pracy ma charakter prototypu urządzenia elektronicznego, 
-jej elementy połączone są przewodami które można rozłączać i łączyć w dowolny sposób tak aby zmienić konfigurację urządzenia
-tak jak przedstawiono na zdjęciu z rys. \ref{fig:devimg}.
+jej elementy połączone są przewodami które można rozłączać i łączyć w dowolny sposób tak aby zmienić konfigurację urządzenia.
 
 \begin{figure}[h!]
     \centering 
@@ -33,10 +32,10 @@ zastosowano kanał nr. 1 przetwornika \textit{ADC} tj. wyprowadzenie z oznaczeni
 (rys. \ref{fig:f411_main}). Pomiary przetwornika odbywały się względem masy (\textit{GND}) przy napięciu referencyjnym
 $U_{ref} = 3,3V$ (maksymalne mierzone napięcie).
 
-W makiecie użyto również zestawu trzech diód (w jednej obudowie) o kolorach czerwonym, zielonym i niebieskim 
+W makiecie użyto również zestawu trzech diod (w jednej obudowie) o kolorach czerwonym, zielonym i niebieskim 
 (\textit{RGB}, \textit{D2} - rys. \ref{fig:f411_main}) umożliwiających wyświetlanie dowolnej barwy złożonej 
 z wymienionych składowych. Kolorowe diody użyte zostały do realizacji podstawowej komunikacji z użytkownikiem,
-informując na przykład o tym czy elektrody są prawidłwo podpięte.
+informując na przykład o tym czy elektrody są prawidłowo podpięte.
 
 \begin{figure}[h!]
     \centering 
@@ -45,6 +44,16 @@ informując na przykład o tym czy elektrody są prawidłwo podpięte.
     \label{fig:ad8232_sch}
 \end{figure}
 
+Wyprowadzenia oznaczone \textit{SDN}, \textit{LO+} i \textit{LO-} (rys. \ref{fig:ad8232_sch}) zostały połączone odpowiednio 
+do wyprowadzeń \textit{PB1}, \textit{PB6} i \textit{PB5} mikrokontrolera (rys. \ref{fig:f411_main}) tak jak przedstawiono na
+rys. \ref{fig:hw_hl}. Rysunek \ref{fig:hw_hl} przedstawia jedynie najważniejsze, funkcjonalne użyte w zbudowanej 
+makiecie sprzętowej w formie uproszczonej. Linie łączące poszczególne bloki, przedstawione w środku kwadratu zaznaczonego 
+linią przerywaną symbolizują wewnętrzne magistrale \textit{AHB} (\textit{Advanced High-performance Bus}) i 
+\textit{APB} (\textit{Advanced Peripherial Bus}) mikrokontrolera STM32F411CE, natomiast linie pozostałe przedstawiają pojedyncze
+linie sygnałowe (zarówno dla sygnałów cyfrowych jak i analogowych).
+
+\newpage
+
 \begin{figure}[h!]
     \centering 
     \includegraphics[scale=0.9]{pl/media/devimg.jpg}
@@ -52,13 +61,12 @@ informując na przykład o tym czy elektrody są prawidłwo podpięte.
     \label{fig:devimg}
 \end{figure}
 
-Wyprowadzenia oznaczone \textit{SDN}, \textit{LO+} i \textit{LO-} (rys. \ref{fig:ad8232_sch}) zostały połączone odpowiednio 
-do wyprowadzeń \textit{PB1}, \textit{PB6} i \textit{PB5} mikrokontrolera (rys. \ref{fig:f411_main}) tak jak przedstawiono na
-rys. \ref{fig:hw_hl}. Rysunek \ref{fig:hw_hl} przedstawia jedynie najważniejsze, funkcjonalne użyte w zbudowanej 
-makiecie sprzętowej w formie uproszczonej. Linie łączące pozczególne bloki, przedstawione w środku kwadratu zaznaczonego 
-linią przerywaną symbolizują wewnętrzne magistrale \textit{AHB} (\textit{Advanced High-performance Bus}) i 
-\textit{APB} (\textit{Advanced Peripherial Bus}) mikrokontrolera STM32F411CE, natomiast linie pozostałe przedstawiają pojedyncze
-linie sygnałowe (zarówno dla sygnałów cyfrowych jak i analogowych).
+Na zdjęciu z rys. \ref{fig:devimg} przedstawiono fizyczną formę makiety sprzętowej.
+Płytki zostały umieszczone na przezroczystym płacie szkła akrylowego i przymocowane przy
+pomocy śrub montażowych. Natomiast połączenia między płytkami zrealizowana za pomocą
+przedstawionych za zdjęciu, przewodów połączeniowych. Płytka z mikrokontrolerem
+posiada złącze \textit{mikro USB}, poprzez które odbywa się wgrywanie oprogramowania
+oraz komunikacja z aplikacją na komputerze osobistym.
 
 \begin{figure}[h!]
     \centering 

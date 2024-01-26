@@ -4,7 +4,7 @@
 \chapter{Opis systemu}
 
 Rozdział ten poglądowo opisuje system będący przedmiotem pracy, z naciskiem na 
-architekturę oprogramowania i projektowanie systemów. 
+wysokopoziomowy opis systemów. 
 Poszczególne elementy systemu zostały przedstawione na schemacie poglądowym na rys. \ref{fig:hl_sys}.
 
 \begin{figure}[h!]
@@ -35,16 +35,15 @@ mającego wartość w diagnostyce chorób serca.
 \section{Wzmocnienie sygnału i filtracja analogowa}
 
 Sygnał \textit{EKG} charakteryzuje się małymi amplitudami, w zakresie od dziesiątek do setek $\mu V$ \cite{Zywietz1990}.
-Ta cecha badanego sygnału uniemożliwia dokonywanie pomiaru w sposób dokładny przez klasyczne przetworniki analogowo/cyfrowe (\textit{ADC}, \textit{Analog to Digital Converter})
+Ta cecha badanego sygnału uniemożliwia dokonywanie bezpośredniego pomiaru w sposób dokładny przez klasyczne przetworniki analogowo/cyfrowe (\textit{ADC}, \textit{Analog to Digital Converter})
 ze względu na ich niską rozdzielczość. Jako rozwiązanie w pracy zastosowano zestaw wzmacniaczy w układzie scalonym firmy \textit{Analog Devices}, \textit{AD8232} \cite{AD8232ds}. 
-Ze względu na to że mierzone impulsy mogą mieć wartości ujemne, \textit{AD8232} przesuwa wzmacnia i normalizuje amplitudę sygnału do przedziału $[0; 3,3V]$ co umożliwia 
-próbkowanie i jego kwantyzację za pomocą klasycznych przetworników \textit{ADC}. 
+Ze względu na to że mierzone impulsy mogą mieć wartości ujemne, \textit{AD8232} przesuwa, wzmacnia i normalizuje amplitudę sygnału w taki sposób że sygnał wyjściowy znajduje się w przedziale od $0V$ do $3,3V$co umożliwia próbkowanie i jego kwantyzację za pomocą klasycznych przetworników \textit{ADC}. 
 \textit{AD8232} zapewnia również mechanizm wykrywania podłączonych elektrod (ang. \textit{leads off detection}).
 
 
 W pracy użyto płytki drukowanej z układem \textit{AD8232} \cite{AD8232BS} w konfiguracji z dwoma pasywnymi filtrami analogowymi: 
 górnoprzepustowym oraz dolnoprzepustowym, o wynikowym paśmie przepuszczania $[0,5 Hz; 40Hz]$ (rys. \ref{fig:afilt}) \cite{AD8232ds}.
-Filtry analogowe złożone w części z elementów biernych (rezystorów, kondensatorów i cewek) nie są idealne ze względu na wachania w 
+Filtry analogowe złożone w części z elementów biernych (rezystorów, kondensatorów i cewek) nie są idealne ze względu na wahania w 
 parametrach tych elementów związane m.in. z temperaturą czy starzeniem się elementów. Kolejnym problemem staje się kwestia połączeń
 między przetwornikiem ADC a mikrokontrolerem. Każda ścieżka lub przewód sygnałowy są podatne na szumy pochodzące z otoczenia, będące
 wynikiem np. indukcji elektromagnetycznej \cite{EmcPhy2010}. Jednym z rozwiązań wymienionych problemów mogą być 
@@ -59,7 +58,7 @@ filtry cyfrowe, które nie są tak podatne na fizyczne warunki pracy jak ich ana
 
 \newpage
 
-\section{Próbkowanie, kwantyzacja i komunikacja z komputerem PC}
+\section{Próbkowanie, kwantyzacja i komunikacja z komputerem osobistym}
 
 Do próbkowania i kwantyzacji sygnału zastosowano wbudowany w układ scalony mikorkontrolera \textit{STM32F411CE} przetwornik analogowo/cyfrowy o rozdzielczości 12 bitów \cite{STM32F4DS}.
 Na podstawie literatury \cite{Ajdaraga2018} ustalono, że częstotliwość próbkowania $f_{s}$ o wartości $360 Hz$ dla sygnału \textit{EKG} spełnia zarówno założenia twierdzenia o próbkowaniu
@@ -68,21 +67,20 @@ jak i wymagania diagnostyczne.
 
 W pracy użyto wbudowanego w \textit{STM32F411CE} kontrolera \textit{DMA} (\textit{Direct Memory Access}), umożliwiającego
 transfery danych między przetwornikiem \textit{ADC} a pamięcią \textit{SRAM} w sposób niezależny od rdzenia mikrokontrolera. 
-Umożliwiło to równoległe przetwarzanie danych trafiających do bufora przez rdzeń \textit{ARM Cortex M4}. 
+Umożliwiło to równoległe przetwarzanie danych trafiających do bufora w pamięci przez rdzeń \textit{ARM Cortex M4}. 
 Próbkowanie z częstotliwością $f_{s}$ zrealizowano za pomocą wbudowanego
 układu licznika cyfrowego w konfiguracji generującej przerwanie co okres $T_{s} = \frac{1}{f_s}$, każde przerwanie rozpoczyna kolejną konwersję przetwornika
 \textit{ADC} oraz następujący po nim transfer próbki poprzez \textit{DMA}.
 \textit{STM32F411CE} posiada rdzeń procesora \textit{ARM Cortex M4} który w swojej architekturze 
-(\textit{ISA}, \textit{Instruction Set Architecture}) zawiera również instrukcje użyteczne w cyfrowym przetwarzaniu sygnałów (\textit{DSP}, \textit{Digital Signal Processing}) \cite{CM4DSP} takie jak na operacje na liczbach zmiennoprzecinkowych czy
+(\textit{ISA}, \textit{Instruction Set Architecture}) zawiera również instrukcje użyteczne w cyfrowym przetwarzaniu sygnałów (\textit{DSP}, \textit{Digital Signal Processing}) \cite{CM4DSP} takie jak np.: 
+operacje na liczbach zmiennoprzecinkowych czy
 instrukcje typu \textit{SIMD} (\textit{Single Instruction Multiple Data}).
 
 
-Komunikację z komputerem PC zrealizowano za pomocą interfejsu \textit{UART} (\textit{Universal Asynchonous Receiver/Transmitter}). 
-Wbudowany w programator \textit{ST Link} układ mostka \textit{UART/USB} umożliwił komunikację z użyciem \textit{UART} poprzez fizyczny interfejs \textit{USB} w komputerze PC.
+Komunikację z komputerem osobistym zrealizowano za pomocą interfejsu \textit{UART} (\textit{Universal Asynchonous Receiver/Transmitter}). 
+Wbudowany w programator \textit{ST Link} układ mostka \textit{UART/USB}, umożliwił komunikację z użyciem \textit{UART} poprzez fizyczny interfejs \textit{USB} w komputerze osobisty.
 W celu zapisu i podglądu sygnału zaprojektowano i zaimplementowano aplikację okienkową na system operacyjny \textit{GNU/Linux} 
-dla architektury standardowych komputerów klasy PC (\textit{x86\_64}).
-Na potrzeby aplikacji zaprojektowano również odpowiedni protokół komunikacyjny w celu zapewnienia możliwości 
-konfiguracji urządzenia oraz odczytywania próbek w ujednolicony sposób. 
+dla architektury standardowych komputerów osobistych (\textit{x86\_64}).
 Aplikację zaprojektowano z myślą o komunikacji ze sprzętem poprzez standardowe sterowniki 
 np. \textit{cdc\_acm} \footnote{\url{https://github.com/torvalds/linux/blob/master/drivers/usb/class/cdc-acm.c}}
 dla systemu \textit{Linux} w wersji \textit{6.5}.
